@@ -14,6 +14,7 @@ export class SearchFlightComponent implements OnInit {
   isSubmitted: boolean;
   options: string[] = ['Mumbai', 'Delhi', 'Chennai', 'Bangalore'];
   options1: string[] = ['Mumbai', 'Delhi', 'Chennai', 'Bangalore'];
+  
   panelOpenState = false;
   countValue = 0;
   childCountValue = 0;
@@ -39,7 +40,7 @@ export class SearchFlightComponent implements OnInit {
     
  },
     {
-       "id":1,
+       "id":3,
        "sortBy":"Air-Aisa",
        "depart":"06:10",
        "arrive":"9:10",
@@ -76,9 +77,12 @@ filteredGoingOptions: Observable<string[]>;
       startWith(''),
       map(value => this._filter1(value))
     );
+
+    this.isSubmitted=false;
 }
 
 submit() {
+  this.isSubmitted=true;
   this.searchService.getDetails().subscribe((data) => {
     console.log(data);
   });
