@@ -1,0 +1,161 @@
+<div class="wrapper">
+  <div class="header-wrapper">
+    <div class="heading">Ranjan Flight Bookings</div>
+  </div>
+  <div class="search-wrapper">
+    <mat-card>
+        <div class="card-header">
+          <div class="sub-heading">Book Your Flights </div>
+        </div>
+        <mat-card-content>
+          <form
+              [formGroup]="authForm"
+              class="search-container"
+              (ngSubmit)="submit()"
+          >
+          <div class="wrapper">
+              <div class="wrapper-box">
+                    <form>
+                        <mat-form-field>
+                          <input type="text" placeholder="Depart From" matInput [formControl]="myControl" [matAutocomplete]="auto1">
+                          <mat-autocomplete #auto1="matAutocomplete">
+                            <mat-option *ngFor="let option of filteredOptions  | async" [value]="option">{{option}}</mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                      </form>
+              </div>
+              <div class="wrapper-box">
+                  <form>
+                      <mat-form-field>
+                        <input type="text" placeholder="Going To" matInput [formControl]="myGoingControl" [matAutocomplete]="auto">
+                        <mat-autocomplete #auto="matAutocomplete">
+                          <mat-option *ngFor="let option of filteredGoingOptions  | async" [value]="option">{{option}}</mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                    </form>
+              </div>
+          </div>
+          <div class="wrapper">
+            <div class="wrapper-box">
+                <mat-form-field>
+                    <mat-label>Departure date</mat-label>
+                    <input matInput [matDatepicker]="picker">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+            </div>
+            <div class="wrapper-box">
+                <mat-form-field>
+                    <mat-label>Return date</mat-label>
+                    <input matInput [matDatepicker]="picker1">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+            </div>
+          </div>
+          <div>
+          <div class="travel-section">
+            <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Travel(s),Class
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <ng-template matExpansionPanelContent>
+                    <div class="passenger">
+                      <div class="btn-section">
+                        <div class="text">Adult</div>
+                        <div>
+                          <button (click)="countValue = countValue -1" >-</button>
+                          {{countValue}}
+                          <button (click)="countValue = countValue +1" >+</button>
+                        </div>
+                      </div>
+                      <div class="btn-section">
+                        <div class="text">Child<span>(2-12yrs)</span></div>
+                        <div>
+                          <button (click)="childCountValue = childCountValue-1" >-</button>
+                          {{childCountValue}}
+                          <button (click)="childCountValue = childCountValue +1" >+</button>
+                        </div>
+                      </div>
+                      <div class="btn-section">
+                        <div class="text">Infant<span>(Below 2 yrs)</span></div>
+                        <div>
+                          <button (click)="infantCountValue = infantCountValue -1" >-</button>
+                          {{infantCountValue}}
+                          <button (click)="infantCountValue = infantCountValue +1" >+</button>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+          </div>
+              <mat-card-actions>
+                  <button mat-raised-button class="search-btn">
+                      <span>Search Flights</span>
+                      <button mat-icon-button aria-label="Example icon button">
+                        <mat-icon>arrow_right_alt</mat-icon>
+                      </button>
+                  </button>
+              </mat-card-actions>
+          </form>
+        </mat-card-content>
+    </mat-card>
+    <mat-card>
+    <mat-card-content>
+        <div *ngIf="isSubmitted">
+       
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource ">
+              
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef width ="10%"> <b>ID </b></th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+              </ng-container>
+          
+              
+              <ng-container matColumnDef="sortBy">
+                <th mat-header-cell *matHeaderCellDef width ="15%"> <b>sortBy</b> </th>
+                <td mat-cell *matCellDef="let element"> {{element.sortBy}} </td>
+              </ng-container>
+          
+             
+              <ng-container matColumnDef="depart">
+                <th mat-header-cell *matHeaderCellDef width ="15%"> <b>Depart</b> </th>
+                <td mat-cell *matCellDef="let element"> {{element.depart}} </td>
+              </ng-container>
+          
+             
+              <ng-container matColumnDef="arrive">
+                <th mat-header-cell *matHeaderCellDef width ="15%"> <b>Arrive </b></th>
+                <td mat-cell *matCellDef="let element"> {{element.arrive}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="duration">
+                  <th mat-header-cell *matHeaderCellDef width ="15%"> <b>Duration </b></th>
+                  <td mat-cell *matCellDef="let element"> {{element.duration}} </td>
+                </ng-container>
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef width ="15%"> <b>Amount</b></th>
+                    <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+                  </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+        </div> 
+      
+<!--       
+          <ng-container *ngFor="let data of dataSource">
+            {{ data.id}}, {{data.sortBy}}, {{data.depart}}
+        </ng-container> -->
+      
+    </mat-card-content>
+    </mat-card>
+</div>
+
+</div>
